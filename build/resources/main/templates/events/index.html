@@ -3,10 +3,9 @@
 <head th:replace="~{fragments :: head}"></head>
 <body class="container">
     <header th:replace="~{fragments :: header}"></header>
+    <h2>All Events</h2>
 
-    <p th:unless="${events} and ${events.size()}">
-        No events! <a href="/events/create">Add an event</a>.
-    </p>
+    <p th:unless="${events} and ${events.size()}">No events!</p>
 
     <table class="table table-striped">
         <thead>
