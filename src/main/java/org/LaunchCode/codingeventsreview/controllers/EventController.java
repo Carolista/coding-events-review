@@ -19,7 +19,7 @@ public class EventController {
 
     // Renders http://localhost:8080/events/create
     @GetMapping("/create")
-    public String renderCreateEventForm() {
+    public String displayCreateEventForm() {
         return "events/create";
     }
 
@@ -32,7 +32,7 @@ public class EventController {
 
     // Renders http://localhost:8080/events/delete
     @GetMapping("/delete")
-    public String renderDeleteEventForm(Model model) {
+    public String displayDeleteEventForm(Model model) {
         model.addAttribute("events", EventData.getAll());
         return "events/delete";
     }
@@ -48,4 +48,19 @@ public class EventController {
         return "redirect:/events";
     }
 
+    // Renders http://localhost:8080/events/edit/{id}
+    @GetMapping("/edit/{eventId}")
+    public String displayEditEventForm(Model model, @PathVariable int eventId) {
+        model.addAttribute("event", EventData.getById(eventId));
+        return "events/edit";
+    }
+
+    // Processes form submitted at http://localhost:8080/events/edit
+    @PostMapping("/edit")
+    public String processEditEventForm(int eventId, String name, String desc) {
+        Event event = EventData.getById(eventId);
+        event.setName(name);
+        event.setDesc(desc);
+        return "redirect:/events";
+    }
 }
