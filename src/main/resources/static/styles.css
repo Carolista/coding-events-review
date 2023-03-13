@@ -1,0 +1,8 @@
+header {
+    margin-bottom: 20px;
+}
+
+/* modify Bootstrap class to improve spacing */
+.form-group {
+    margin-bottom: 12px;
+}
