@@ -57,10 +57,11 @@ public class EventController {
 
     // Processes form submitted at http://localhost:8080/events/edit
     @PostMapping("/edit")
-    public String processEditEventForm(int eventId, String name, String desc) {
+    public String processEditEventForm(int eventId, String name, String desc, String contactEmail) {
         Event event = EventData.getById(eventId);
         event.setName(name);
         event.setDesc(desc);
+        event.setContactEmail(contactEmail);
         return "redirect:/events";
     }
 }
