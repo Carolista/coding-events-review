@@ -20,6 +20,7 @@ public class Event {
     private String desc;
 
     @Email(message="Email must be a valid format.")
+    @NotBlank(message="Email is required.")
     private String contactEmail;
 
     public Event(String name, String desc, String contactEmail) {
