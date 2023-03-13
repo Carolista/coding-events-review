@@ -23,12 +23,16 @@ public class Event {
     @NotBlank(message="Email is required.")
     private String contactEmail;
 
-    public Event(String name, String desc, String contactEmail) {
+    public Event() {
         this.id = nextId;
+        nextId++;
+    }
+
+    public Event(String name, String desc, String contactEmail) {
+        this();
         this.name = name;
         this.desc = desc;
         this.contactEmail = contactEmail;
-        nextId++;
     }
 
     public int getId() {

@@ -21,7 +21,8 @@ public class EventController {
 
     // Renders http://localhost:8080/events/create
     @GetMapping("/create")
-    public String displayCreateEventForm() {
+    public String displayCreateEventForm(Model model) {
+        model.addAttribute("event", new Event());
         return "events/create";
     }
 
