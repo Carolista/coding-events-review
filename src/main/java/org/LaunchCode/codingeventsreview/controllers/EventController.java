@@ -1,22 +1,29 @@
 package org.LaunchCode.codingeventsreview.controllers;
 
 import jakarta.validation.Valid;
-import org.LaunchCode.codingeventsreview.data.EventData;
+import org.LaunchCode.codingeventsreview.data.EventRepository;
 import org.LaunchCode.codingeventsreview.models.Event;
 import org.LaunchCode.codingeventsreview.models.EventType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @Controller
 @RequestMapping("/events")
 public class EventController {
 
+    // Allow Spring to manage class using dependency injection
+    @Autowired
+    private EventRepository eventRepository;
+
     // Renders http://localhost:8080/events
     @GetMapping
     public String displayAllEvents(Model model) {
-        model.addAttribute("events", EventData.getAll());
+        model.addAttribute("events", eventRepository.findAll());
         return "events/index";
     }
 
@@ -35,14 +42,14 @@ public class EventController {
             model.addAttribute("types", EventType.values());
             return "events/create";
         }
-        EventData.add(newEvent);
+        eventRepository.save(newEvent);
         return "redirect:/events";
     }
 
     // Renders http://localhost:8080/events/delete
     @GetMapping("/delete")
     public String displayDeleteEventForm(Model model) {
-        model.addAttribute("events", EventData.getAll());
+        model.addAttribute("events", eventRepository.findAll());
         return "events/delete";
     }
 
@@ -51,7 +58,7 @@ public class EventController {
     public String processDeleteEventForm(@RequestParam(required = false) int[] eventIds) {
         if (eventIds != null) {
             for (int id : eventIds) {
-                EventData.remove(id);
+                eventRepository.deleteById(id);
             }
         }
         return "redirect:/events";
@@ -60,17 +67,28 @@ public class EventController {
     // Renders http://localhost:8080/events/edit/{id}
     @GetMapping("/edit/{eventId}")
     public String displayEditEventForm(Model model, @PathVariable int eventId) {
-        model.addAttribute("event", EventData.getById(eventId));
-        return "events/edit";
+        // Don't worry about this Optional syntax until chapter 18.3
+        Optional<Event> eventWrapper = eventRepository.findById(eventId);
+        if (eventWrapper.isPresent()) {
+            Event event = eventWrapper.get();
+            model.addAttribute("event", event);
+            return "events/edit";
+        }
+        return "events/index";
     }
 
     // Processes form submitted at http://localhost:8080/events/edit
     @PostMapping("/edit")
     public String processEditEventForm(int eventId, String name, String description, String contactEmail) {
-        Event event = EventData.getById(eventId);
-        event.setName(name);
-        event.setDescription(description);
-        event.setContactEmail(contactEmail);
+        // Don't worry about this Optional syntax until chapter 18.3
+        Optional<Event> eventWrapper = eventRepository.findById(eventId);
+        if (eventWrapper.isPresent()) {
+            Event event = eventWrapper.get();
+            event.setName(name);
+            event.setDescription(description);
+            event.setContactEmail(contactEmail);
+            eventRepository.save(event);
+        }
         return "redirect:/events";
     }
 }
