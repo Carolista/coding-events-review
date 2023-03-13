@@ -28,8 +28,8 @@ public class EventController {
 
     // Processes form submitted from http://localhost:8080/events/create
     @PostMapping("/create")
-    public String processCreateEventForm(@RequestParam String eventName) {
-        events.add(new Event(eventName));
+    public String processCreateEventForm(@RequestParam String eventName, String eventDesc) {
+        events.add(new Event(eventName, eventDesc));
         return "redirect:/events";
     }
 
