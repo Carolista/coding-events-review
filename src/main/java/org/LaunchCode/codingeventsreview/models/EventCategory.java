@@ -1,15 +1,9 @@
 package org.LaunchCode.codingeventsreview.models;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 
 @Entity
-public class EventCategory {
-
-    @Id
-    @GeneratedValue
-    private int id;
+public class EventCategory extends AbstractEntity {
 
     private String name;
 
@@ -17,10 +11,6 @@ public class EventCategory {
 
     public EventCategory(String name) {
         this.name = name;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getName() {
