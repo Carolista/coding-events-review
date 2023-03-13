@@ -23,16 +23,19 @@ public class Event {
     @NotBlank(message="Email is required.")
     private String contactEmail;
 
+    private EventType type;
+
     public Event() {
         this.id = nextId;
         nextId++;
     }
 
-    public Event(String name, String desc, String contactEmail) {
+    public Event(String name, String desc, String contactEmail, EventType type) {
         this();
         this.name = name;
         this.desc = desc;
         this.contactEmail = contactEmail;
+        this.type = type;
     }
 
     public int getId() {
@@ -63,6 +66,8 @@ public class Event {
         this.contactEmail = contactEmail;
     }
 
+
+
     @Override
     public String toString() {
         return name;
@@ -80,5 +85,13 @@ public class Event {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public EventType getType() {
+        return type;
+    }
+
+    public void setType(EventType type) {
+        this.type = type;
     }
 }

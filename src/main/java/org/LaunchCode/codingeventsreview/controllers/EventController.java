@@ -3,6 +3,7 @@ package org.LaunchCode.codingeventsreview.controllers;
 import jakarta.validation.Valid;
 import org.LaunchCode.codingeventsreview.data.EventData;
 import org.LaunchCode.codingeventsreview.models.Event;
+import org.LaunchCode.codingeventsreview.models.EventType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -23,13 +24,15 @@ public class EventController {
     @GetMapping("/create")
     public String displayCreateEventForm(Model model) {
         model.addAttribute("event", new Event());
+        model.addAttribute("types", EventType.values());
         return "events/create";
     }
 
     // Processes form submitted at http://localhost:8080/events/create
     @PostMapping("/create")
-    public String processCreateEventForm(@ModelAttribute @Valid Event newEvent, Errors errors) {
+    public String processCreateEventForm(@ModelAttribute @Valid Event newEvent, Errors errors, Model model) {
         if (errors.hasErrors()) {
+            model.addAttribute("types", EventType.values());
             return "events/create";
         }
         EventData.add(newEvent);
