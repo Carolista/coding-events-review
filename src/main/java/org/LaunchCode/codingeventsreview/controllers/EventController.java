@@ -1,9 +1,11 @@
 package org.LaunchCode.codingeventsreview.controllers;
 
+import jakarta.validation.Valid;
 import org.LaunchCode.codingeventsreview.data.EventData;
 import org.LaunchCode.codingeventsreview.models.Event;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -19,13 +21,17 @@ public class EventController {
 
     // Renders http://localhost:8080/events/create
     @GetMapping("/create")
-    public String displayCreateEventForm() {
+    public String displayCreateEventForm(Model model) {
+        model.addAttribute("event", new Event());
         return "events/create";
     }
 
     // Processes form submitted at http://localhost:8080/events/create
     @PostMapping("/create")
-    public String processCreateEventForm(@ModelAttribute Event newEvent) {
+    public String processCreateEventForm(@ModelAttribute @Valid Event newEvent, Errors errors) {
+        if (errors.hasErrors()) {
+            return "events/create";
+        }
         EventData.add(newEvent);
         return "redirect:/events";
     }
@@ -57,10 +63,11 @@ public class EventController {
 
     // Processes form submitted at http://localhost:8080/events/edit
     @PostMapping("/edit")
-    public String processEditEventForm(int eventId, String name, String desc) {
+    public String processEditEventForm(int eventId, String name, String desc, String contactEmail) {
         Event event = EventData.getById(eventId);
         event.setName(name);
         event.setDesc(desc);
+        event.setContactEmail(contactEmail);
         return "redirect:/events";
     }
 }
