@@ -6,9 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Controller
 @RequestMapping("/events")
 public class EventController {
@@ -28,8 +25,8 @@ public class EventController {
 
     // Processes form submitted at http://localhost:8080/events/create
     @PostMapping("/create")
-    public String processCreateEventForm(@RequestParam String eventName, String eventDesc) {
-        EventData.add(new Event(eventName, eventDesc));
+    public String processCreateEventForm(@ModelAttribute Event newEvent) {
+        EventData.add(newEvent);
         return "redirect:/events";
     }
 
