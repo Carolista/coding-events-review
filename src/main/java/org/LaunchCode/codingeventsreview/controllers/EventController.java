@@ -26,10 +26,28 @@ public class EventController {
         return "events/create";
     }
 
-    // Processes form submitted from http://localhost:8080/events/create
+    // Processes form submitted at http://localhost:8080/events/create
     @PostMapping("/create")
     public String processCreateEventForm(@RequestParam String eventName, String eventDesc) {
         EventData.add(new Event(eventName, eventDesc));
+        return "redirect:/events";
+    }
+
+    // Renders http://localhost:8080/events/delete
+    @GetMapping("/delete")
+    public String renderDeleteEventForm(Model model) {
+        model.addAttribute("events", EventData.getAll());
+        return "events/delete";
+    }
+
+    // Processes form submitted at http://localhost:8080/events/delete
+    @PostMapping("/delete")
+    public String processDeleteEventForm(@RequestParam(required = false) int[] eventIds) {
+        if (eventIds != null) {
+            for (int id : eventIds) {
+                EventData.remove(id);
+            }
+        }
         return "redirect:/events";
     }
 
