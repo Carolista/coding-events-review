@@ -1,23 +1,27 @@
 package org.LaunchCode.codingeventsreview.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 import java.util.Objects;
 
+@Entity
 public class Event {
 
-    private static int nextId = 1;
-
-    private final int id;
+    @Id // this is the primary key
+    @GeneratedValue // let the database generate it
+    private int id;
 
     @Size(min=3, max=50, message="Name must be 3-50 characters.")
     @NotBlank(message="Name is required.")
     private String name;
 
     @Size(max=500, message="Description must be no more than 500 characters.")
-    private String desc;
+    private String description;
 
     @Email(message="Email must be a valid format.")
     @NotBlank(message="Email is required.")
@@ -25,15 +29,12 @@ public class Event {
 
     private EventType type;
 
-    public Event() {
-        this.id = nextId;
-        nextId++;
-    }
+    // no-arg constructor required for an entity class
+    public Event() {}
 
-    public Event(String name, String desc, String contactEmail, EventType type) {
-        this();
+    public Event(String name, String description, String contactEmail, EventType type) {
         this.name = name;
-        this.desc = desc;
+        this.description = description;
         this.contactEmail = contactEmail;
         this.type = type;
     }
@@ -50,12 +51,12 @@ public class Event {
         this.name = name;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getContactEmail() {
