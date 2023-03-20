@@ -1,9 +1,8 @@
 package org.LaunchCode.codingeventsreview.models;
 
 import jakarta.persistence.Entity;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.*;
 
 
 @Entity
@@ -20,15 +19,17 @@ public class Event extends AbstractEntity {
     @NotBlank(message="Email is required.")
     private String contactEmail;
 
-    private EventType type;
+    @ManyToOne
+    @NotNull(message="Category is required.")
+    private EventCategory eventCategory;
 
     public Event() {}
 
-    public Event(String name, String description, String contactEmail, EventType type) {
+    public Event(String name, String description, String contactEmail, EventCategory eventCategory) {
         this.name = name;
         this.description = description;
         this.contactEmail = contactEmail;
-        this.type = type;
+        this.eventCategory = eventCategory;
     }
 
     public String getName() {
@@ -54,12 +55,13 @@ public class Event extends AbstractEntity {
     public void setContactEmail(String contactEmail) {
         this.contactEmail = contactEmail;
     }
-    public EventType getType() {
-        return type;
+
+    public EventCategory getEventCategory() {
+        return eventCategory;
     }
 
-    public void setType(EventType type) {
-        this.type = type;
+    public void setEventCategory(EventCategory eventCategory) {
+        this.eventCategory = eventCategory;
     }
 
     @Override
